@@ -1,0 +1,17 @@
+<%= form_with(model: backlink) do |form| %>
+  <% if backlink.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(backlink.errors.count, "error") %> prohibited this backlink from being saved:</h2>
+
+      <ul>
+        <% backlink.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

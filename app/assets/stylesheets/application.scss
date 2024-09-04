@@ -1,0 +1,29 @@
+body {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    .main-content {
+      display: flex;
+      flex: 1;
+      padding-top: 20px;
+    }
+
+    .sidebar {
+      min-width: 200px;
+      max-width: 250px;
+      background-color: #f8f9fa;
+      padding: 20px;
+    }
+
+    .content-area {
+      flex: 1;
+      padding: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        max-width: 100%;
+      }
+    }

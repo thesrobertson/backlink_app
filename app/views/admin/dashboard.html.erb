@@ -1,0 +1,103 @@
+<h1>Admin Dashboard</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Added On</th>
+      <th>Country</th>
+      <th>Site</th>
+      <th>Price</th>
+      <th>Traffic</th>
+      <th>Domain Rank</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @backlinks.each do |backlink| %>
+      <tr>
+        <td><%= backlink.added_on %></td>
+        <td><%= backlink.country %></td>
+        <td><%= backlink.site %></td>
+        <td><%= backlink.price %></td>
+        <td><%= backlink.traffic %></td>
+        <td><%= backlink.domain_rank %></td>
+        <td>
+          <%= link_to "Edit", "#", class: "btn btn-primary btn-sm", 
+              data: { toggle: "modal", target: "#editBacklinkModal#{backlink.id}" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<!-- Modals -->
+<% @backlinks.each do |backlink| %>
+  <div class="modal fade" id="editBacklinkModal<%= backlink.id %>" tabindex="-1" role="dialog" aria-labelledby="editBacklinkModalLabel<%= backlink.id %>" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editBacklinkModalLabel<%= backlink.id %>">Edit Backlink</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <%= form_with(model: backlink, url: backlink_path(backlink), method: :put, local: true) do |form| %>
+            <div class="form-group">
+              <%= form.label :added_on %>
+              <%= form.date_field :added_on, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.label :country %>
+              <%= form.text_field :country, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.label :site %>
+              <%= form.text_field :site, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.label :price %>
+              <%= form.number_field :price, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.label :traffic %>
+              <%= form.number_field :traffic, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.label :domain_rank %>
+              <%= form.number_field :domain_rank, step: 0.1, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.label :category %>
+              <%= form.text_field :category, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.label :duration %>
+              <%= form.text_field :duration, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.label :article_writing %>
+              <%= form.check_box :article_writing %>
+            </div>
+            <div class="form-group">
+              <%= form.label :cs_possible %>
+              <%= form.check_box :cs_possible %>
+            </div>
+            <div class="form-group">
+              <%= form.label :special_price %>
+              <%= form.check_box :special_price %>
+            </div>
+            <div class="form-group">
+              <%= form.label :comments %>
+              <%= form.text_area :comments, class: "form-control" %>
+            </div>
+            <div class="modal-footer">
+              <%= form.submit "Save changes", class: "btn btn-primary" %>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @backlink %>
+
+<div>
+  <%= link_to "Edit this backlink", edit_backlink_path(@backlink) %> |
+  <%= link_to "Back to backlinks", backlinks_path %>
+
+  <%= button_to "Destroy this backlink", @backlink, method: :delete %>
+</div>

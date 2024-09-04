@@ -1,0 +1,31 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  added_on: 2024-09-02
+  country: MyString
+  site: MyString
+  price: 1
+  traffic: 1
+  domain_rank: 1
+  category: MyString
+  duration: MyString
+  article_writing: false
+  cs_possible: false
+  comments: MyText
+  special_price: false
+  available: false
+
+two:
+  added_on: 2024-09-02
+  country: MyString
+  site: MyString
+  price: 1
+  traffic: 1
+  domain_rank: 1
+  category: MyString
+  duration: MyString
+  article_writing: false
+  cs_possible: false
+  comments: MyText
+  special_price: false
+  available: false

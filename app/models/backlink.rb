@@ -1,0 +1,2 @@
+class Backlink < ApplicationRecord
+end

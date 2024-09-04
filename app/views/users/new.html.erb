@@ -1,0 +1,14 @@
+<h1>Enter your Email</h1>
+<%= form_with url: users_path, method: :post do %>
+  <div class="form-group">
+    <%= label_tag :email, "Email" %>
+    <%= email_field_tag :email, nil, class: 'form-control' %>
+  </div>
+  <%= submit_tag 'Submit', class: 'btn btn-primary' %>
+<% end %>
+
+<% if flash[:alert] %>
+  <div class="alert alert-danger mt-3">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
