@@ -1,0 +1,28 @@
+<h1>Backlinks for <%= params[:category] %></h1>
+
+<% if @backlinks.present? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Site</th>
+        <th>Price</th>
+        <th>Domain Rank</th>
+        <th>Category</th>
+        <!-- Add other relevant fields -->
+      </tr>
+    </thead>
+    <tbody>
+      <% @backlinks.each do |backlink| %>
+        <tr>
+          <td><%= clean_url(backlink.site) %></td>
+          <td>&#8364;<%= backlink.price %></td>
+          <td><%= backlink.domain_rank %></td>
+          <td><%= backlink.category %></td>
+          <!-- Add other relevant fields -->
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No backlinks found for <%= params[:category] %>.</p>
+<% end %>

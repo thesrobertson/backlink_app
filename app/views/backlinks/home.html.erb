@@ -1,0 +1,242 @@
+
+<div class="row row-cols-1 row-cols-lg-3 row-cols-xxl-3">
+          <div class="col">
+            <div class="card radius-10">
+              <div class="card-body">
+                <div class="d-flex align-items-start gap-2">
+                  <div>
+                    <p class="mb-0 fs-6">Total Links</p>
+                  </div>
+                  <div class="ms-auto widget-icon-small text-white bg-gradient-purple">
+                    <ion-icon name="wallet-outline"></ion-icon>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center mt-3">
+                  <div>
+                    <h4 class="mb-0"><%= Backlink.where(available: true).count %></h4>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card radius-10">
+              <div class="card-body">
+                <div class="d-flex align-items-start gap-2">
+                  <div>
+                    <p class="mb-0 fs-6">Available Countries</p>
+                  </div>
+                  <div class="ms-auto widget-icon-small text-white bg-gradient-info">
+                    <ion-icon name="people-outline"></ion-icon>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center mt-3">
+                  <div>
+                    <h4 class="mb-0"><%= @countries.count %></h4>
+                  </div>
+                
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card radius-10">
+              <div class="card-body">
+                <div class="d-flex align-items-start gap-2">
+                  <div>
+                    <p class="mb-0 fs-6">Available Categories</p>
+                  </div>
+                  <div class="ms-auto widget-icon-small text-white bg-gradient-danger">
+                    <ion-icon name="bag-handle-outline"></ion-icon>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center mt-3">
+                  <div>
+                    <h4 class="mb-0"><%= @categories.count %></h4>
+                  </div>
+                
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+<% @backlinks_by_country.each do |country, backlinks| %>
+      
+  <div class="card radius-10 w-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <h3 class="mb-0"><%= country %></h3>
+          
+            </div>
+            <div class= "row">
+            <div class="col-md-4">
+            <div class="table-responsive mt-2 radius-10">
+              <table class="table align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>New</th>
+                    
+                     <th colspan="2"style="text-align: right"> <%= link_to "View More", backlinks_by_new_path(country: country), class: 'btn btn-primary' %></th>
+                      
+                  </tr>
+                </thead>
+                <tbody>
+                  <% backlinks.compact.select { |b| b.added_on.present? }.sort_by(&:added_on).last(5).each do |item| %>
+                      <tr class="text-secondary small">
+                    <td><%=item.added_on %></td>
+                    <td ><%= clean_url(item.site) %></td>
+                  
+          
+                    <td>
+                      <div class="d-flex align-items-center gap-3 fs-6">
+                        <a href="javascript:;" class="text-primary view-backlink"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            data-site="<%= item.site %>"
+                            data-price="<%= item.price %>"
+                            data-domain-rank="<%= item.domain_rank %>"
+                            data-category="<%= item.category %>"
+                            data-duration="<%= item.duration %>"
+                            data-article-writing="<%= item.article_writing %>"
+                            data-cs-possible="<%= item.cs_possible %>"
+                            data-comments="<%= item.comments %>"
+                            data-special-price="<%= item.special_price %>"
+                            data-available="<%= item.available %>"
+                            title="View detail"
+                            aria-label="Views">
+                            <ion-icon name="eye-outline"></ion-icon>
+                          </a>
+                      </div>
+                    </td>
+                  </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+            </div>
+            <div class="col-md-4">
+            <div class="table-responsive mt-2">
+              <table class="table align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Special Price</th>
+                    
+                     <th colspan="2"style="text-align: right"> <%= link_to "View More", backlinks_by_special_path(country: country), class: 'btn btn-primary' %></th>
+          
+                  </tr>
+                </thead>
+                <tbody>
+                  <% backlinks.select { |b| b.special_price }.sort_by(&:added_on).last(5).each do |item| %>
+                      <tr class="text-secondary small">
+                        
+                    
+                    <td><%= clean_url(item.site) %></td>
+                    <td>  &#8364;<%= item.price %></td>
+                    <td>
+                      <div class="d-flex align-items-center gap-3 fs-6">
+                        <a href="javascript:;" class="text-primary view-backlink"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            data-site="<%= item.site %>"
+                            data-price="<%= item.price %>"
+                            data-domain-rank="<%= item.domain_rank %>"
+                            data-category="<%= item.category %>"
+                            data-duration="<%= item.duration %>"
+                            data-article-writing="<%= item.article_writing %>"
+                            data-cs-possible="<%= item.cs_possible %>"
+                            data-comments="<%= item.comments %>"
+                            data-special-price="<%= item.special_price %>"
+                            data-available="<%= item.available %>"
+                            title="View detail"
+                            aria-label="Views">
+                            <ion-icon name="eye-outline"></ion-icon>
+                          </a>
+                      </div>
+                    </td>
+                  </tr>
+                    <% end %>
+                </tbody>
+              </table>
+            </div>
+            </div>
+            <div class="col-md-4">
+            <div class="table-responsive mt-2">
+              <table class="table align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Top Ranking</th>
+                     <th colspan="2"style="text-align: right"><button class="btn btn-secondary small" >View More</button></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% backlinks.sort_by(&:domain_rank).last(5).reverse.each do |item| %>
+                      <tr class="text-secondary small">
+                        
+                    <td><%= clean_url(item.site) %></td>
+                    <td><%= item.domain_rank %></td>
+                  
+                    <td>
+                      <div class="d-flex align-items-center gap-3 fs-6">
+                        <a href="javascript:;" class="text-primary view-backlink"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            data-site="<%= item.site %>"
+                            data-price="<%= item.price %>"
+                            data-domain-rank="<%= item.domain_rank %>"
+                            data-category="<%= item.category %>"
+                            data-duration="<%= item.duration %>"
+                            data-article-writing="<%= item.article_writing %>"
+                            data-cs-possible="<%= item.cs_possible %>"
+                            data-comments="<%= item.comments %>"
+                            data-special-price="<%= item.special_price %>"
+                            data-available="<%= item.available %>"
+                            title="View detail"
+                            aria-label="Views">
+                            <ion-icon name="eye-outline"></ion-icon>
+                          </a>
+                      </div>
+                    </td>
+                  </tr>
+                    <% end %>
+                </tbody>
+              </table>
+            </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer" style="text-align: right;">
+          <button class="btn btn-primary">View all <%= country %> links</button>
+        </div>
+      </div>
+
+    <% end %>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+  // Attach click event listener to all "eye" icons
+  document.querySelectorAll('.view-backlink').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      const itemData = e.currentTarget.dataset;
+      
+      // Populate the modal with the backlink details
+      document.getElementById('modal-site').textContent = itemData.site;
+      document.getElementById('modal-price').textContent = itemData.price;
+      document.getElementById('modal-domain-rank').textContent = itemData.domainRank;
+      document.getElementById('modal-category').textContent = itemData.category;
+      document.getElementById('modal-duration').textContent = itemData.duration;
+      document.getElementById('modal-article-writing').textContent = itemData.articleWriting == 'true' ? 'Yes' : 'No';
+      document.getElementById('modal-cs-possible').textContent = itemData.csPossible == 'true' ? 'Yes' : 'No';
+      document.getElementById('modal-comments').textContent = itemData.comments || 'No Comments';
+      document.getElementById('modal-special-price').textContent = itemData.specialPrice == 'true' ? 'Yes' : 'No';
+      document.getElementById('modal-available').textContent = itemData.available == 'true' ? 'Yes' : 'No';
+
+      // Show the modal
+      const backlinkModal = new bootstrap.Modal(document.getElementById('backlinkModal'));
+      backlinkModal.show();
+    });
+  });
+});
+
+    </script>

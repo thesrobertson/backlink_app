@@ -1,4 +1,86 @@
 <h1>Admin Dashboard</h1>
+<div class="col-md-12">
+      <div class="card mb-4">
+        <div class="card-header">
+          Filter Backlinks
+        </div>
+        <div class="card-body">
+          <%= form_with url: backlinks_path, method: :get, local: true, id: 'filter-form' do %>
+            <div class="row">
+              <!-- Country and Category Drop-downs on the same row -->
+              <div class="col-md-6">
+                <div class="form-group">
+                  <%= label_tag :country, "Country" %>
+                  <%= select_tag :country, options_for_select(@backlinks.pluck(:country).uniq), include_blank: true, class: 'form-control' %>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <%= label_tag :category, "Category" %>
+                  <%= select_tag :category, options_for_select(@backlinks.pluck(:category).uniq), include_blank: true, class: 'form-control' %>
+                </div>
+              </div>
+            </div>
+
+            <!-- Price Range Slider -->
+            <div class="form-group">
+              <%= label_tag :price_range, "Price Range (€)" %>
+              <input type="range" min="0" max="1000" value="500" class="form-control-range" id="priceRange">
+              <p class="text-muted">Price: €<span id="priceRangeValue">500</span></p>
+            </div>
+
+            <script>
+              const priceRange = document.getElementById('priceRange');
+              const priceRangeValue = document.getElementById('priceRangeValue');
+              priceRange.addEventListener('input', function() {
+                priceRangeValue.textContent = priceRange.value;
+              });
+            </script>
+
+            <!-- Radio buttons for filters on the same row -->
+            <div class="form-group">
+              <%= label_tag :article_writing, "Article Writing" %><br>
+              <div class="form-check form-check-inline">
+                <%= radio_button_tag :article_writing, true, params[:article_writing] == 'true', class: 'form-check-input' %>
+                <%= label_tag :article_writing_yes, "Yes", class: 'form-check-label' %>
+              </div>
+              <div class="form-check form-check-inline">
+                <%= radio_button_tag :article_writing, false, params[:article_writing] == 'false', class: 'form-check-input' %>
+                <%= label_tag :article_writing_no, "No", class: 'form-check-label' %>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <%= label_tag :cs_possible, "CS Possible" %><br>
+              <div class="form-check form-check-inline">
+                <%= radio_button_tag :cs_possible, true, params[:cs_possible] == 'true', class: 'form-check-input' %>
+                <%= label_tag :cs_possible_yes, "Yes", class: 'form-check-label' %>
+              </div>
+              <div class="form-check form-check-inline">
+                <%= radio_button_tag :cs_possible, false, params[:cs_possible] == 'false', class: 'form-check-input' %>
+                <%= label_tag :cs_possible_no, "No", class: 'form-check-label' %>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <%= label_tag :special_price, "Special Price" %><br>
+              <div class="form-check form-check-inline">
+                <%= radio_button_tag :special_price, true, params[:special_price] == 'true', class: 'form-check-input' %>
+                <%= label_tag :special_price_yes, "Yes", class: 'form-check-label' %>
+              </div>
+              <div class="form-check form-check-inline">
+                <%= radio_button_tag :special_price, false, params[:special_price] == 'false', class: 'form-check-input' %>
+                <%= label_tag :special_price_no, "No", class: 'form-check-label' %>
+              </div>
+            </div>
+
+            <%= submit_tag 'Filter', class: 'btn btn-primary' %>
+            <!-- Reset button that clears the form inputs -->
+            <button type="button" class="btn btn-secondary mt-2" id="reset-btn">Reset</button>
+          <% end %>
+        </div>
+      </div>
+    </div>
 
 <table class="table table-striped">
   <thead>

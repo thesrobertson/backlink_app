@@ -73,3 +73,4 @@ end
 
 gem 'bootstrap', '~> 5.0.0'
 gem 'jquery-rails'
+gem 'kaminari'

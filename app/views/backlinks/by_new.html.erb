@@ -1,0 +1,30 @@
+<h1>New Backlinks for <%= params[:country] || 'All Countries' %></h1>
+
+<% if @backlinks.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Site</th>
+        <th>Price</th>
+        <th>Domain Rank</th>
+        <th>Added On</th>
+        <th>Country</th>
+        <!-- Add other relevant fields -->
+      </tr>
+    </thead>
+    <tbody>
+      <% @backlinks.each do |backlink| %>
+        <tr>
+          <td><%= clean_url(backlink.site) %></td>
+          <td>&#8364;<%= backlink.price %></td>
+          <td><%= backlink.domain_rank %></td>
+          <td><%= backlink.added_on %></td>
+          <td><%= backlink.country %></td>
+          <!-- Add other relevant fields -->
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No new backlinks found for <%= params[:country] || 'all countries' %>.</p>
+<% end %>

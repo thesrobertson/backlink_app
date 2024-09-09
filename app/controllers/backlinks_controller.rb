@@ -1,6 +1,6 @@
 class BacklinksController < ApplicationController
   before_action :set_backlink, only: %i[ show edit update destroy ]
-  before_action :require_admin, except: [:index, :show]
+  before_action :require_admin, except: [:index, :show, :home, :by_country, :by_category]
 
 def require_admin
   unless session[:admin]
@@ -87,6 +87,10 @@ end
     end
   end
 
+   def home
+    @backlinks_by_country = Backlink.all.group_by(&:country)
+  end
+
 
   # DELETE /backlinks/1 or /backlinks/1.json
   def destroy
@@ -97,6 +101,56 @@ end
       format.json { head :no_content }
     end
   end
+
+  def by_country
+    # Find backlinks based on the selected country passed as a parameter
+    if params[:country].present?
+      @backlinks = Backlink.where(country: params[:country])
+    else
+      @backlinks = Backlink.all # Fallback to all backlinks if no country is selected
+    end
+  end
+
+   def by_new
+    # Calculate the date range for the last 4 months
+    four_months_ago = 4.months.ago.to_date
+
+    # If the :country param is provided, filter by country and the added_on date
+    if params[:country].present?
+      @backlinks = Backlink.where('added_on >= ?', four_months_ago)
+                           .where(country: params[:country])
+                           .order(added_on: :desc)
+    else
+      # If no country is provided, just filter by the added_on date
+      @backlinks = Backlink.where('added_on >= ?', four_months_ago)
+                           .order(added_on: :desc)
+    end
+  end
+
+
+  def by_special
+    # Find backlinks based on the selected country passed as a parameter
+    if params[:country].present?
+      @backlinks = Backlink.where(special_price: true)
+                           .where(country: params[:country])
+                           .order(added_on: :desc)
+    else
+      # If no country is provided, just filter by the added_on date
+      @backlinks = Backlink.where(special_price: true)
+                           .order(added_on: :desc)
+    end
+  end
+
+
+  def by_category
+    # Find backlinks based on the selected country passed as a parameter
+    if params[:category].present?
+      @backlinks = Backlink.where(category: params[:category])
+    else
+      @backlinks = Backlink.all # Fallback to all backlinks if no country is selected
+    end
+  end
+
 
   private
    def set_backlink

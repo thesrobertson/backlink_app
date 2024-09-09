@@ -4,40 +4,244 @@
   <title>BacklinkExplorer</title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
-  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-  <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+
+
+
 
   <!-- Bootstrap CSS CDN -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- jQuery and Bootstrap JS CDN -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
 </head>
 <body>
-  <div class="main-content">
-    <div class="sidebar">
-      <h5>Navigation</h5>
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <a class="nav-link active" href="#">Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Backlinks</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Reports</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Settings</a>
-        </li>
-      </ul>
-    </div>
+   <div class="wrapper">
 
-    <div class="content-area">
+    <!--start sidebar -->
+    <aside class="sidebar-wrapper" data-simplebar="true">
+      <div class="sidebar-header">
+        <div>
+        
+         <%= link_to image_tag('linkzenit.png', style: "max-width:80px;"), backlinks_home_path %>
+        </div>
+
+        
+      </div>
+      <!--navigation-->
+      <div style="overflow: scroll;">
+      <ul class="metismenu" id="menu" >
+         <% if @countries.present? %>
+        <li class="menu-label">Countries</li>
+        <li>
+          <ul>
+
+            <% @countries.each do |country| %>
+            <li> <a href="<%= backlinks_by_country_path(country: country) %>">
+                <ion-icon name="ellipse-outline"></ion-icon><%= country %></a>
+                
+              </a>
+            </li>
+            <% end %>
+            
+          </ul>
+        </li>
+        <% end %>
+        
+
+        <li class="menu-label">Categories</li>
+        <li>
+          <ul>
+            <% @categories.each do |category| %>
+            <li> <a href="<%= backlinks_by_category_path(category: category) %>">
+                <ion-icon name="ellipse-outline"></ion-icon><%= category %></a>
+                
+              </a>
+            </li>
+            <% end %>
+            
+          </ul>
+        </li>
+            
+      </ul>
+      <!--end navigation-->
+    </aside>
+    <!--end sidebar -->
+
+    <!--start top header-->
+    <header class="top-header">
+      <nav class="navbar navbar-expand gap-3">
+        <div class="toggle-icon">
+          <ion-icon name="menu-outline"></ion-icon>
+        </div>
+       
+        <form class="searchbar">
+          <div class="position-absolute top-50 translate-middle-y search-icon ms-3">
+            <ion-icon name="search-outline"></ion-icon>
+          </div>
+          <input class="form-control" type="text" placeholder="Search for anything">
+          <div class="position-absolute top-50 translate-middle-y search-close-icon">
+            <ion-icon name="close-outline"></ion-icon>
+          </div>
+        </form>
+        <div class="top-navbar-right ms-auto">
+
+          <ul class="navbar-nav align-items-center">
+            
+            <% if session[:admin] %>
+            <li class="nav-item">
+              
+                <button class="btn btn-outline-primary"><%= link_to "Admin Panel", admin_dashboard_path %></button>
+            
+            </li>
+             <li class="nav-item">
+              
+                <button class="btn btn-outline-primary"><%= link_to "Add Link", new_backlink_path %></button>
+            
+            </li>
+            <li class="nav-item">
+              
+                <button class="btn btn-outline-primary"><%= link_to "manage_access", users_path %></button>
+            
+            </li>
+            <% else %>
+            <li class="nav-item">
+              
+                <button class="btn btn-outline-primary">Contact</button>
+          
+            </li>
+            
+
+            <% end %>
+            
+              </ul>
+            </li>
+
+          </ul>
+
+        </div>
+      </nav>
+    </header>
+    <!--end top header-->
+
+
+    <!-- start page content wrapper-->
+    <div class="page-content-wrapper">
+      <!-- start page content-->
+      <div class="page-content">
+
+        <!--start breadcrumb-->
+        <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+          <div class="breadcrumb-title pe-3">Dashboard</div>
+          <div class="ps-3">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb mb-0 p-0 align-items-center">
+                <li class="breadcrumb-item"><a href="javascript:;">
+                    <ion-icon name="home-outline"></ion-icon>
+                  </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">eCommerce</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="ms-auto">
+            <div class="btn-group">
+              <button type="button" class="btn btn-outline-primary">Settings</button>
+              <button type="button"
+                class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
+                data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
+                  href="javascript:;">Action</a>
+                <a class="dropdown-item" href="javascript:;">Another action</a>
+                <a class="dropdown-item" href="javascript:;">Something else here</a>
+                <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class ="content-area" style="padding:20px;">
       <%= yield %>
     </div>
+    </div>
   </div>
+</div>
+
+<!-- Modal Template -->
+<div class="modal fade" id="backlinkModal" tabindex="-1" aria-labelledby="backlinkModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="backlinkModalLabel">Backlink Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <strong>Site:</strong> <span id="modal-site"></span>
+        </div>
+        <div>
+          <strong>Price:</strong> &#8364;<span id="modal-price"></span>
+        </div>
+        <div>
+          <strong>Domain Rank:</strong> <span id="modal-domain-rank"></span>
+        </div>
+        <div>
+          <strong>Category:</strong> <span id="modal-category"></span>
+        </div>
+        <div>
+          <strong>Duration:</strong> <span id="modal-duration"></span>
+        </div>
+        <div>
+          <strong>Article Writing:</strong> <span id="modal-article-writing"></span>
+        </div>
+        <div>
+          <strong>CS Possible:</strong> <span id="modal-cs-possible"></span>
+        </div>
+        <div>
+          <strong>Comments:</strong> <span id="modal-comments"></span>
+        </div>
+        <div>
+          <strong>Special Price:</strong> <span id="modal-special-price"></span>
+        </div>
+        <div>
+          <strong>Available:</strong> <span id="modal-available"></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- jQuery from CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Bootstrap JS from CDN -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+ <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
+  <script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
+  <script src="assets/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <!--plugins-->
+  <script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+  <script src="assets/plugins/apexcharts-bundle/js/apexcharts.min.js"></script>
+  <script src="assets/plugins/easyPieChart/jquery.easypiechart.js"></script>
+  <script src="assets/plugins/chartjs/chart.min.js"></script>
+  <script src="assets/js/index.js"></script>
+  <!-- Main JS-->
+  <script src="assets/js/main.js"></script>
+
+
+
 </body>
+
 </html>

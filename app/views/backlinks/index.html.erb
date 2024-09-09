@@ -7,41 +7,66 @@
           Filter Backlinks
         </div>
         <div class="card-body">
-          <%= form_with url: backlinks_path, method: :get, local: true, id: 'filter-form' do %>
-            <div class="form-group">
-              <%= label_tag :country, "Country" %>
-              <%= select_tag :country, options_for_select(@backlinks.pluck(:country).uniq), include_blank: true, class: 'form-control' %>
-            </div>
-            <div class="form-group">
-              <%= label_tag :category, "Category" %>
-              <%= select_tag :category, options_for_select(@backlinks.pluck(:category).uniq), include_blank: true, class: 'form-control' %>
-            </div>
-            <div class="form-group">
-              <%= label_tag :price_range, "Price Range (€)" %>
-              <div class="d-flex justify-content-between">
-                <%= number_field_tag :min_price, params[:min_price], placeholder: 'Min', class: 'form-control mr-2', min: 0 %>
-                <%= number_field_tag :max_price, params[:max_price], placeholder: 'Max', class: 'form-control', min: 0 %>
+          <form id="filter-form">
+            <div class="row">
+              <!-- Country and Category Drop-downs on the same row -->
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="country">Country</label>
+                  <select id="countryFilter" class="form-control">
+                    <option value="">All Countries</option>
+                    <% @backlinks.pluck(:country).uniq.each do |country| %>
+                      <option value="<%= country %>"><%= country %></option>
+                    <% end %>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="category">Category</label>
+                  <select id="categoryFilter" class="form-control">
+                    <option value="">All Categories</option>
+                    <% @backlinks.pluck(:category).uniq.each do |category| %>
+                      <option value="<%= category %>"><%= category %></option>
+                    <% end %>
+                  </select>
+                </div>
               </div>
             </div>
-            <div class="form-group">
-              <%= label_tag :article_writing, "Article Writing" %><br>
-              <%= radio_button_tag :article_writing, true, params[:article_writing] == 'true', class: 'filter-radio' %> Yes
-              <%= radio_button_tag :article_writing, false, params[:article_writing] == 'false', class: 'filter-radio' %> No
+
+            <!-- Filtering radio buttons -->
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="article_writing">Article Writing</label><br>
+                  <input type="radio" name="articleWriting" value="true"> Yes
+                  <input type="radio" name="articleWriting" value="false"> No
+                  <input type="radio" name="articleWriting" value="" checked> Any
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="cs_possible">CS Possible</label><br>
+                  <input type="radio" name="csPossible" value="true"> Yes
+                  <input type="radio" name="csPossible" value="false"> No
+                  <input type="radio" name="csPossible" value="" checked> Any
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="special_price">Special Price</label><br>
+                  <input type="radio" name="specialPrice" value="true"> Yes
+                  <input type="radio" name="specialPrice" value="false"> No
+                  <input type="radio" name="specialPrice" value="" checked> Any
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-              <%= label_tag :cs_possible, "CS Possible" %><br>
-              <%= radio_button_tag :cs_possible, true, params[:cs_possible] == 'true', class: 'filter-radio' %> Yes
-              <%= radio_button_tag :cs_possible, false, params[:cs_possible] == 'false', class: 'filter-radio' %> No
-            </div>
-            <div class="form-group">
-              <%= label_tag :special_price, "Special Price" %><br>
-              <%= radio_button_tag :special_price, true, params[:special_price] == 'true', class: 'filter-radio' %> Yes
-              <%= radio_button_tag :special_price, false, params[:special_price] == 'false', class: 'filter-radio' %> No
-            </div>
-            <%= submit_tag 'Filter', class: 'btn btn-primary' %>
-            <!-- Reset button that clears the form inputs -->
-            <button type="button" class="btn btn-secondary mt-2" id="reset-btn">Reset</button>
-          <% end %>
+
+            <button type="button" id="filter-btn" class="btn btn-primary">Filter</button>
+            <button type="button" id="reset-btn" class="btn btn-secondary">Reset</button>
+          </form>
         </div>
       </div>
     </div>
@@ -52,45 +77,150 @@
         <div class="card-header">
           Backlinks
         </div>
-        <div class="card-body">
-          <table class="table table-striped">
+        <div class="card-body table-responsive">
+          <table class="table table-striped" id="backlinksTable">
             <thead>
               <tr>
-                <th class="sortable" data-sort="added_on">Added On</th>
-                <th class="sortable" data-sort="country">Country</th>
+                <th data-sort="country">Country</th>
                 <th>Site</th>
-                <th class="sortable" data-sort="price">Price</th>
-                <th class="sortable" data-sort="traffic">Traffic</th>
-                <th class="sortable" data-sort="domain_rank">Domain Rank</th>
-                <th class="sortable" data-sort="category">Category</th>
-                <th>Duration</th>
+                <th data-sort="price">Price</th>
+                <th data-sort="traffic">Traffic</th>
+                <th data-sort="domain_rank">Domain Rank</th>
+                <th>Category</th>
                 <th>Article Writing</th>
                 <th>CS Possible</th>
                 <th>Special Price</th>
-                <th>Available</th>
               </tr>
             </thead>
             <tbody>
               <% @backlinks.each do |backlink| %>
                 <tr>
-                  <td><%= backlink.added_on %></td>
                   <td><%= backlink.country %></td>
                   <td><%= backlink.site %></td>
-                  <td><%= backlink.price %></td>
+                  <td>&#8364;<%= backlink.price %></td>
                   <td><%= backlink.traffic %></td>
                   <td><%= backlink.domain_rank %></td>
                   <td><%= backlink.category %></td>
-                  <td><%= backlink.duration %></td>
                   <td><%= backlink.article_writing ? 'Yes' : 'No' %></td>
                   <td><%= backlink.cs_possible ? 'Yes' : 'No' %></td>
                   <td><%= backlink.special_price ? 'Yes' : 'No' %></td>
-                  <td><%= backlink.available ? 'Yes' : 'No' %></td>
                 </tr>
               <% end %>
             </tbody>
           </table>
         </div>
+        <!-- Pagination controls -->
+        <div id="pagination-controls"></div>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('turbo:load', function () {
+    initBacklinkTable();
+  });
+
+  function initBacklinkTable() {
+    const table = document.getElementById('backlinksTable');
+    const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+    let currentPage = 1;
+    const rowsPerPage = 10;
+
+    // Sorting functionality
+    document.querySelectorAll('th[data-sort]').forEach(header => {
+      header.addEventListener('click', function () {
+        const sortType = header.dataset.sort;
+        const ascending = header.classList.contains('ascending');
+        const sortedRows = rows.sort((a, b) => {
+          let aValue = a.querySelector(`td:nth-child(${header.cellIndex + 1})`).textContent.trim();
+          let bValue = b.querySelector(`td:nth-child(${header.cellIndex + 1})`).textContent.trim();
+
+          if (sortType === 'price' || sortType === 'traffic' || sortType === 'domain_rank') {
+            aValue = parseFloat(aValue) || 0;
+            bValue = parseFloat(bValue) || 0;
+          } else {
+            aValue = aValue.toLowerCase();
+            bValue = bValue.toLowerCase();
+          }
+
+          return ascending ? (aValue > bValue ? 1 : -1) : (aValue < bValue ? 1 : -1);
+        });
+
+        header.classList.toggle('ascending', !ascending);
+
+        table.querySelector('tbody').innerHTML = '';
+        sortedRows.forEach(row => table.querySelector('tbody').appendChild(row));
+
+        renderTable(currentPage);
+      });
+    });
+
+    // Filter functionality
+    document.getElementById('filter-btn').addEventListener('click', function () {
+      const countryFilter = document.getElementById('countryFilter').value.toLowerCase();
+      const categoryFilter = document.getElementById('categoryFilter').value.toLowerCase();
+      const articleWritingFilter = document.querySelector('input[name="articleWriting"]:checked').value;
+      const csPossibleFilter = document.querySelector('input[name="csPossible"]:checked').value;
+      const specialPriceFilter = document.querySelector('input[name="specialPrice"]:checked').value;
+
+      rows.forEach(row => {
+        const country = row.children[0].textContent.toLowerCase();
+        const category = row.children[5].textContent.toLowerCase();
+        const articleWriting = row.children[6].textContent === 'Yes';
+        const csPossible = row.children[7].textContent === 'Yes';
+        const specialPrice = row.children[8].textContent === 'Yes';
+
+        const showRow = (!countryFilter || country.includes(countryFilter)) &&
+          (!categoryFilter || category.includes(categoryFilter)) &&
+          (articleWritingFilter === '' || String(articleWriting) === articleWritingFilter) &&
+          (csPossibleFilter === '' || String(csPossible) === csPossibleFilter) &&
+          (specialPriceFilter === '' || String(specialPrice) === specialPriceFilter);
+
+        row.style.display = showRow ? '' : 'none';
+      });
+
+      renderTable(1);
+    });
+
+    // Reset functionality
+    document.getElementById('reset-btn').addEventListener('click', function () {
+      document.getElementById('filter-form').reset();
+      rows.forEach(row => row.style.display = '');
+      renderTable(1);
+    });
+
+    // Pagination functionality
+    function renderTable(page) {
+      currentPage = page;
+      const start = (page - 1) * rowsPerPage;
+      const end = start + rowsPerPage;
+      rows.forEach((row, index) => {
+        row.style.display = (index >= start && index < end) ? '' : 'none';
+      });
+
+      renderPaginationControls();
+    }
+
+    function renderPaginationControls() {
+      const paginationControls = document.getElementById('pagination-controls');
+      paginationControls.innerHTML = '';
+
+      const totalPages = Math.ceil(rows.length / rowsPerPage);
+      for (let i = 1; i <= totalPages; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.classList.add('btn', 'btn-primary', 'mr-2');
+        if (i === currentPage) {
+          pageButton.classList.add('active');
+        }
+
+        pageButton.addEventListener('click', function () {
+          renderTable(i);
+        });
+
+        paginationControls.appendChild(pageButton);
+      }
+    }
+
