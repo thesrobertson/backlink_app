@@ -10,5 +10,6 @@
     # Step 3: Limit the URL to 25 characters and add ellipsis if necessary
     cleaned_url.length > 25 ? cleaned_url[0...25] + '...' : cleaned_url
   end
+
 end
 

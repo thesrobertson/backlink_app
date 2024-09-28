@@ -20,12 +20,193 @@ File: style.css
 - Responsive
 - swicther
 - Responsive
-
+#1A1364
+#EDF7F9
  */
+/* Style for sortable table headers */
+
+.page-title {
+	margin-top:20px;
+	margin-bottom: 20px;
+	color:#1A1364;
+
+}
+.filter-label {
+	margin-top: 20px;
+	padding-top: 5px;
+	border-top: solid 1px white;
+}
+
+.sortable {
+  cursor: pointer;
+}
+
+.sortable:after {
+  content: ' \25B2'; /* Triangle pointing up */
+  font-size: 0.8em;
+  padding-left: 5px;
+}
+
+.sortable.sort-desc:after {
+  content: ' \25BC'; /* Triangle pointing down */
+}
+/* Spinner container */
+.loading-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* High z-index to overlay everything */
+}
+
+/* Spinner animation */
+.spinner {
+  border: 8px solid #f3f3f3; /* Light gray background of the spinner */
+  border-top: 8px solid #3498db; /* Blue foreground */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite; /* Infinite spinning animation */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.login-body{text-align: center; margin: 0;padding: 0;height: 100vh;font-family: sans-serif;background-size: cover;background-repeat: no-repeat;background-position: center;overflow: hidden}
+		@media screen and (max-width: 600px;){body{background-size: cover;: fixed}}#particles-js{height: 100%}.loginBox{position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%);width: 350px;min-height: 200px;background: #1A1364;border-radius: 10px;padding: 40px;box-sizing: border-box}.user{margin: 0 auto;display: block;margin-bottom: 20px}h3{margin: 0;padding: 0 0 20px;color: #FFFFFF;text-align: center}.loginBox input{width: 100%;margin-bottom: 20px}.loginBox input[type="text"], .loginBox input[type="password"]{border: none;border-bottom: 2px solid #262626;outline: none;height: 40px;color: #fff;background: transparent;font-size: 16px;padding-left: 20px;box-sizing: border-box}.loginBox input[type="text"]:hover, .loginBox input[type="password"]:hover{color: #42F3FA;border: 1px solid #42F3FA;box-shadow: 0 0 5px rgba(0,255,0,.3), 0 0 10px rgba(0,255,0,.2), 0 0 15px rgba(0,255,0,.1), 0 2px 0 black}.loginBox input[type="text"]:focus, .loginBox input[type="password"]:focus{border-bottom: 2px solid #42F3FA}.inputBox{position: relative}.inputBox span{position: absolute;top: 10px;color: #262626}.loginBox input[type="submit"]{border: none;outline: none;height: 40px;font-size: 16px;background: #77BECF;color: #fff;border-radius: 20px;cursor: pointer}.loginBox a{color: #262626;font-size: 14px;font-weight: bold;text-decoration: none;text-align: center;display: block}a:hover{color: #00ffff}p{color: #0000ff}
+ .login-label {
+ 	color:#ffffff;
+ }
+
+.login-logo {
+	height: 120px;
+	text-align: center;
+	margin-bottom: 20px;
+	margin-left: auto;
+	margin-right: auto;
+}
+ .login-page {
+	min-width:100vw;
+	min-height: 100vh;
+	background-image: url('bg-header-slider.png');
+	background-size: cover;
+}
 
 
+ .content-area {
+ 	background:#EDF7F9;
+ }
+
+  .logo-main {
+      width: 120px;
+      text-align: center;
+      margin-left:auto;
+    }
+
+.logo-box {
+	margin:auto;
+	padding-top: 10px;
+}
 
 
+.btn.btn-light.view-more-btn {
+	background:white;
+	border-radius: 20px;
+	border: solid 1px white;
+	color: #2AA0B9;
+	font-size: 10px;
+}
+
+.btn.btn-light.view-more-btn:hover{
+	border: solid 1px #2AA0B9;
+}
+
+.btn.btn-primary.core-btn {
+	background:#2AA0B9;
+	border-radius: 20px;
+	border: solid 1px #2AA0B9;
+	color: white;
+	font-size: 15px;
+}
+
+.btn.btn-primary.core-btn:hover {
+	background:#77BECF;
+}
+
+th.table-title-home {
+	color: #2AA0B9;
+	font-size: 18px;
+	background-color:#EDF7F9;
+}
+
+
+.mini-table {
+	border:1px solid #77BECF;
+}
+
+.icon-inner {
+	 color: #77BECF;
+}
+
+.country-title {
+	color: #1A1364;
+}
+
+.btn.btn-outline-primary.contact-btn {
+	border-radius: 20px;
+	color:white;
+	background:#1A1364;
+	border: solid 1px #1A1364;
+}
+
+
+.btn.btn-outline-primary.contact-btn:hover {
+	
+	color:#1A1364;
+	background-color: white;
+}
+
+.flag {
+	max-width: 40px;
+	margin-right: 20px;
+}
+
+.flag-mini {
+	max-width: 25px;
+	border-radius: 100px;
+}
+
+.menu-section {
+	border-radius: 10px;
+	background-color: white !important;
+}
+
+.top-header {
+	background:#77BECF !important;
+}
+
+.cat-1 {
+	font-size: 10px;
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	color: white;
+	
+	border-radius: 20px;
+	width:fit-content;
+}
 /* Genral */
 
 body {
@@ -44,6 +225,7 @@ a {
 
 ion-icon {
     vertical-align: middle;
+    color:  #77BECF;
 }
 
 ::placeholder {
@@ -65,6 +247,9 @@ ion-icon {
 
 }
 
+.table-light thead th {
+  background-color: blue !important;
+}
 
 .wrapper .page-content {
 	padding: 1.5rem;
@@ -95,12 +280,14 @@ ion-icon {
     left: 0;
     width: 260px;
     height: 100%;
-    background-color: #ffffff;
+    background-color:#1A1364;
     background-clip: padding-box;
     border-right: 1px solid #e2e3e4;
     transition: all .2s;
     z-index: 16;
     box-shadow: none;
+    position: fixed !important;
+ 
 }
 
 
@@ -114,7 +301,7 @@ ion-icon {
     bottom: 0;
     padding: 0 15px;
     z-index: 5;
-    background-color: #ffffff;
+    background-color: #1A1364;
     border-right: 1px solid #e2e3e4;
     border-bottom: 0px solid #e4e4e4;
     transition: all .2s;
@@ -246,9 +433,9 @@ ion-icon {
 .sidebar-wrapper .metismenu a:active,
 .sidebar-wrapper .metismenu a:focus,
 .sidebar-wrapper .metismenu a:hover {
-	color: #923eb9;
+	color: #2AA0B9;
     text-decoration: none;
-    background-color: rgb(146 62 185 / 10%);
+    background-color: #EDF7F9;
 }
 
 .menu-label {
@@ -1511,6 +1698,8 @@ ul.categories-list li {
     
 
 }
+
+
 
 
 @media screen and (max-width:620px) {

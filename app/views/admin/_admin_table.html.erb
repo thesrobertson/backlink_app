@@ -1,0 +1,328 @@
+ <!-- Filtering Card -->
+
+  <div class="accordion mb-4 mt-4" id="filterAccordion">
+  <div class="accordion-item" style="background: #1A1364; color:white; border-radius: 40px; padding:20px;">
+    <h2 class="accordion-header" id="headingOne">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="border-radius: 40px;" >
+        Filter Backlinks
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#filterAccordion">
+      <div class="accordion-body">
+        <form id="filter-form">
+           <!-- Search Input -->
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <input style="border-radius:20px; margin-top: 20px;" type="text" id="searchInput" class="form-control" placeholder="Search by link name...">
+            </div>
+          </div>
+          <div class="row">
+            <!-- Country and Category Drop-downs on the same row -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="country"><strong>Country</strong></label>
+                <select style="border-radius:20px;" id="countryFilter" class="form-control">
+                  <option value="">All Countries</option>
+                  <% @backlinks.pluck(:country).uniq.each do |country| %>
+                    <option value="<%= country %>"><%= country %></option>
+                  <% end %>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="category"><strong>Category</strong></label>
+                <select style="border-radius:20px;" id="categoryFilter" class="form-control">
+                  <option value="">All Categories</option>
+                  <% @backlinks.pluck(:category).uniq.each do |category| %>
+                    <option value="<%= category %>"><%= category %></option>
+                  <% end %>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filtering radio buttons -->
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group filter-label">
+                <label for="article_writing" ><strong>Article Writing</strong></label><br>
+                <input type="radio" name="articleWriting" value="true"> Yes
+                <input type="radio" name="articleWriting" value="false"> No
+                <input type="radio" name="articleWriting" value="" checked> Any
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group filter-label">
+                <label for="cs_possible"><strong>CS Possible</strong></label><br>
+                <input type="radio" name="csPossible" value="true"> Yes
+                <input type="radio" name="csPossible" value="false"> No
+                <input type="radio" name="csPossible" value="" checked> Any
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group filter-label">
+                <label for="special_price"><strong>Special Price</strong></label><br>
+                <input type="radio" name="specialPrice" value="true"> Yes
+                <input type="radio" name="specialPrice" value="false"> No
+                <input type="radio" name="specialPrice" value="" checked> Any
+              </div>
+            </div>
+          </div>
+          <div style="text-align: center; padding:20px; font-size: 20px;">
+          <button type="button" id="filter-btn" class="btn btn-primary core-btn" style="border-radius: 40px; font-size: 20px; margin-right: 5px; padding-left: 30px; padding-right: 30px; padding-top: 10px; padding-bottom: 10px;">Filter</button>
+          <button type="button" id="reset-btn" class="btn btn-outline-light" style="border-radius: 40px; font-size: 20px; margin-left: 5px; padding-left: 30px; padding-right: 30px; padding-top: 10px; padding-bottom: 10px;">Reset</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Backlinks Table Card -->
+<div class="card" style="border-radius: 40px;">
+  <div class="card-body table-responsive">
+    <table class="table" id="backlinksTable">
+      <thead>
+        <tr>
+          <th class="sortable" data-sort="added_on">Added On</th>
+          <th>Link Name</th>
+          <th></th>
+          <th class="sortable" data-sort="Price">Price</th>
+          <th class="sortable" data-sort="domain_rank">DR</th>
+          <th></th>
+          <th>AW</th>
+          <th>CS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @backlinks.each do |backlink| %>
+          <tr>
+            <td><%= backlink.added_on.present? ? backlink.added_on.strftime('%d/%m/%Y') : 'N/A' %></td>
+            <td><%= clean_url(backlink.site) %></td> <!-- Link Name Column -->
+            <td name="<%= backlink.country %>"> <%= image_tag "#{backlink.country}.png", class: "flag-mini" %></td>
+            <td>&#8364;<%= backlink.price %><% if backlink.special_price %><ion-icon data-toggle="tooltip" title="Special Price" name="star" style="margin-left: 5px; margin-bottom: 2px;"></ion-icon><% end %></td>
+            <td><%= backlink.domain_rank %></td>
+            <td>
+              <div class="cat-1" style="background-color: <%= @category_colors[backlink.category] %>"><%= backlink.category %></div>
+            </td>
+            <td>
+              <% if backlink.article_writing %>
+                <ion-icon data-toggle="tooltip" title="Article Writing: Yes" name="checkmark-circle"></ion-icon>
+              <% else %>
+                <ion-icon data-toggle="tooltip" title="Article Writing: No" name="close-circle-outline"></ion-icon>
+              <% end %>
+            </td>
+            <td>
+              <% if backlink.cs_possible %>
+                <ion-icon data-toggle="tooltip" title="C/S Possible: Yes" name="checkmark-circle"></ion-icon>
+              <% else %>
+                <ion-icon data-toggle="tooltip" title="C/S Possible: No" name="close-circle-outline"></ion-icon>
+              <% end %>
+            </td>
+            <td>
+              <%= link_to "Edit", "#", class: "btn btn-light view-more-btn", data: { toggle: "modal", target: "#editBacklinkModal#{backlink.id}" } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modals -->
+<% @backlinks.each do |backlink| %>
+  <div class="modal fade" id="editBacklinkModal<%= backlink.id %>" tabindex="-1" role="dialog" aria-labelledby="editBacklinkModalLabel<%= backlink.id %>" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editBacklinkModalLabel<%= backlink.id %>">Edit Backlink</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <%= form_with(model: backlink, url: backlink_path(backlink), method: :put, local: true) do |form| %>
+            <div class="form-group">
+              <%= form.label :added_on %>
+              <%= form.date_field :added_on, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.label :country %>
+              <%= form.text_field :country, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.label :site %>
+              <%= form.text_field :site, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.label :price %>
+              <%= form.number_field :price, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.label :traffic %>
+              <%= form.number_field :traffic, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.label :domain_rank %>
+              <%= form.number_field :domain_rank, step: 0.1, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.label :category %>
+              <%= form.text_field :category, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.label :duration %>
+              <%= form.text_field :duration, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.label :article_writing %>
+              <%= form.check_box :article_writing %>
+            </div>
+            <div class="form-group">
+              <%= form.label :cs_possible %>
+              <%= form.check_box :cs_possible %>
+            </div>
+            <div class="form-group">
+              <%= form.label :special_price %>
+              <%= form.check_box :special_price %>
+            </div>
+            <div class="form-group">
+              <%= form.label :comments %>
+              <%= form.text_area :comments, class: "form-control" %>
+            </div>
+            <div class="modal-footer">
+              <%= form.submit "Save changes", class: "btn btn-primary" %>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const filterButton = document.getElementById('filter-btn');
+  const resetButton = document.getElementById('reset-btn');
+  const searchInput = document.getElementById('searchInput');
+  const tableBody = document.querySelector('#backlinksTable tbody');
+
+  // Attach event listener for the Filter button
+  filterButton.addEventListener('click', function () {
+    // Get filter values
+    const countryFilter = document.getElementById('countryFilter').value;
+    const categoryFilter = document.getElementById('categoryFilter').value;
+    const articleWritingFilter = document.querySelector('input[name="articleWriting"]:checked').value;
+    const csPossibleFilter = document.querySelector('input[name="csPossible"]:checked').value;
+    const specialPriceFilter = document.querySelector('input[name="specialPrice"]:checked').value;
+
+    // Get all rows of the table
+    const rows = tableBody.querySelectorAll('tr');
+
+    // Loop through rows and apply filters
+    rows.forEach(function (row) {
+      const dateAdded = row.cells[0].textContent.trim(); // Added On column
+      const linkName = row.cells[1].textContent.trim().toLowerCase(); // Link Name column
+      const country = row.cells[2].getAttribute('name'); // Country column
+      const category = row.cells[5].textContent.trim(); // Category column
+      const articleWriting = row.cells[6].querySelector('ion-icon').getAttribute('name') === 'checkmark-circle'; // AW column
+      const csPossible = row.cells[7].querySelector('ion-icon').getAttribute('name') === 'checkmark-circle'; // CS column
+      const specialPrice = row.cells[3].querySelector('ion-icon') !== null; // Price column special price icon
+
+      // Apply filters (check if each filter matches, if applicable)
+      const countryMatch = !countryFilter || country === countryFilter;
+      const categoryMatch = !categoryFilter || category === categoryFilter;
+      const articleWritingMatch = articleWritingFilter === "" || articleWriting.toString() === articleWritingFilter;
+      const csPossibleMatch = csPossibleFilter === "" || csPossible.toString() === csPossibleFilter;
+      const specialPriceMatch = specialPriceFilter === "" || specialPrice.toString() === specialPriceFilter;
+
+      // Show or hide the row based on filters
+      if (countryMatch && categoryMatch && articleWritingMatch && csPossibleMatch && specialPriceMatch) {
+        row.style.display = ''; // Show the row
+      } else {
+        row.style.display = 'none'; // Hide the row
+      }
+    });
+  });
+
+  // Attach event listener for the Reset button
+  resetButton.addEventListener('click', function () {
+    // Reset all filter inputs
+    document.getElementById('countryFilter').value = '';
+    document.getElementById('categoryFilter').value = '';
+    document.querySelector('input[name="articleWriting"][value=""]').checked = true;
+    document.querySelector('input[name="csPossible"][value=""]').checked = true;
+    document.querySelector('input[name="specialPrice"][value=""]').checked = true;
+
+    // Show all rows
+    const rows = tableBody.querySelectorAll('tr');
+    rows.forEach(function (row) {
+      row.style.display = '';
+    });
+  });
+
+  // Attach event listener for the Search input
+  searchInput.addEventListener('keyup', function () {
+    const searchTerm = searchInput.value.toLowerCase();
+    const rows = tableBody.querySelectorAll('tr');
+
+    rows.forEach(function (row) {
+      const linkName = row.cells[1].textContent.toLowerCase(); // Link name is now in the second column
+      if (linkName.includes(searchTerm)) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  });
+
+  document.querySelectorAll('.sortable').forEach(header => {
+    header.addEventListener('click', () => {
+      const table = header.closest('table');
+      const tbody = table.querySelector('tbody');
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+      const index = Array.from(header.parentNode.children).indexOf(header);
+      const isDescending = header.classList.toggle('sort-desc');
+
+      const direction = isDescending ? -1 : 1;
+
+      rows.sort((a, b) => {
+        const aText = a.cells[index].textContent.trim();
+        const bText = b.cells[index].textContent.trim();
+
+        // Sort by date for "Added On" column
+        if (header.dataset.sort === 'added_on') {
+          const aDate = aText !== 'N/A' ? new Date(aText.split('/').reverse().join('-')) : new Date(0);
+          const bDate = bText !== 'N/A' ? new Date(bText.split('/').reverse().join('-')) : new Date(0);
+          return (aDate - bDate) * direction;
+        }
+
+        // Correct sorting for DR as numbers
+        if (header.dataset.sort === 'domain_rank') {
+          const aValue = parseFloat(aText) || 0;
+          const bValue = parseFloat(bText) || 0;
+          return (aValue - bValue) * direction;
+        }
+
+        // Sort numerically if possible, otherwise alphabetically
+        const aValue = parseFloat(aText.replace(/[^0-9.-]+/g, '')) || aText;
+        const bValue = parseFloat(bText.replace(/[^0-9.-]+/g, '')) || bText;
+
+        if (typeof aValue === 'number' && typeof bValue === 'number') {
+          return (aValue - bValue) * direction;
+        } else {
+          return aValue.localeCompare(bValue) * direction;
+        }
+      });
+
+      rows.forEach(row => tbody.appendChild(row));
+    });
+  });
+});
+
+
+</script>

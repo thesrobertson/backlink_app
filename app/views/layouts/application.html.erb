@@ -6,6 +6,9 @@
   <%= csp_meta_tag %>
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'index','main','metisMenu.min', 'perfect-scrollbar', 'simplebar.min', 'data-turbolinks-track': 'reload' %>
+   <%= javascript_include_tag 'jquery.min','bootstrap.bundle.min', 'data-turbolinks-track': 'reload' %>
+   <%= stylesheet_link_tag 'simplebar', media: 'all' %>
 
 
 
@@ -22,29 +25,54 @@
 
 </head>
 <body>
+<!-- Loading Spinner -->
+<div id="loading-spinner" class="loading-spinner">
+  <div class="spinner"></div>
+</div>
+  <% if session[:user_email].present? %>
+
    <div class="wrapper">
 
     <!--start sidebar -->
     <aside class="sidebar-wrapper" data-simplebar="true">
       <div class="sidebar-header">
-        <div>
+        <div class="logo-box">
         
-         <%= link_to image_tag('linkzenit.png', style: "max-width:80px;"), backlinks_home_path %>
+         <%= link_to image_tag('linkzenit.png', class: "logo-main"), backlinks_home_path %>
         </div>
 
         
       </div>
       <!--navigation-->
-      <div style="overflow: scroll;">
+      <div>
       <ul class="metismenu" id="menu" >
+         <li class="menu-label">What's Changed?</li>
+        <li>
+          <ul class="menu-section">
+
+           
+            <li> <%= link_to "Special Price", backlinks_by_special_path %>
+                
+            </li>
+            <li> <%= link_to "Recently Added", backlinks_by_new_path %>
+                
+            </li>
+            <li> <%= link_to "Recently Deleted", backlinks_recently_deleted_path %>
+            </li>
+
+
+           
+            
+          </ul>
+        </li>
          <% if @countries.present? %>
         <li class="menu-label">Countries</li>
         <li>
-          <ul>
+          <ul class="menu-section">
 
             <% @countries.each do |country| %>
             <li> <a href="<%= backlinks_by_country_path(country: country) %>">
-                <ion-icon name="ellipse-outline"></ion-icon><%= country %></a>
+                <%= country %></a>
                 
               </a>
             </li>
@@ -57,10 +85,10 @@
 
         <li class="menu-label">Categories</li>
         <li>
-          <ul>
+          <ul class="menu-section">
             <% @categories.each do |category| %>
             <li> <a href="<%= backlinks_by_category_path(category: category) %>">
-                <ion-icon name="ellipse-outline"></ion-icon><%= category %></a>
+                <%= category %></a>
                 
               </a>
             </li>
@@ -95,26 +123,34 @@
           <ul class="navbar-nav align-items-center">
             
             <% if session[:admin] %>
-            <li class="nav-item">
+            <li>
               
-                <button class="btn btn-outline-primary"><%= link_to "Admin Panel", admin_dashboard_path %></button>
+               
+                <%= button_to('Admin Panel', admin_dashboard_path, method: :get, class: "btn btn-outline-light", style: "border-radius:20px; margin-left:10px;") %>
             
             </li>
-             <li class="nav-item">
+             <li>
               
-                <button class="btn btn-outline-primary"><%= link_to "Add Link", new_backlink_path %></button>
+             
+                <%= button_to('Add Link', new_backlink_path, method: :get, class: "btn btn-outline-light", style: "border-radius:20px; margin-left:10px;") %>
             
             </li>
-            <li class="nav-item">
+            <li>
               
-                <button class="btn btn-outline-primary"><%= link_to "manage_access", users_path %></button>
+                 <%= button_to('Manage Access', users_path, method: :get, class: "btn btn-outline-light", style: "border-radius:20px; margin-left:10px;") %>
             
+            </li>
+            <li>
+              <%= button_to('Logout', logout_path, method: :delete, data: { turbo_method: :delete }, class: "btn btn-outline-primary contact-btn", style: "border-radius:20px; margin-left:10px;") %>
             </li>
             <% else %>
-            <li class="nav-item">
+            <li >
               
-                <button class="btn btn-outline-primary">Contact</button>
-          
+                <button class="btn btn-outline-primary contact-btn">Contact</button>
+              </li>
+             <li >
+                <%= button_to('Logout', logout_path, method: :delete, data: { turbo_method: :delete }, class: "btn btn-outline-light", style: "border-radius:20px; margin-left:10px;") %>
+                
             </li>
             
 
@@ -131,117 +167,59 @@
     <!--end top header-->
 
 
+  
     <!-- start page content wrapper-->
     <div class="page-content-wrapper">
       <!-- start page content-->
-      <div class="page-content">
-
-        <!--start breadcrumb-->
-        <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-          <div class="breadcrumb-title pe-3">Dashboard</div>
-          <div class="ps-3">
-            <nav aria-label="breadcrumb">
-              <ol class="breadcrumb mb-0 p-0 align-items-center">
-                <li class="breadcrumb-item"><a href="javascript:;">
-                    <ion-icon name="home-outline"></ion-icon>
-                  </a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">eCommerce</li>
-              </ol>
-            </nav>
-          </div>
-          <div class="ms-auto">
-            <div class="btn-group">
-              <button type="button" class="btn btn-outline-primary">Settings</button>
-              <button type="button"
-                class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
-                data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-              </button>
-              <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
-                  href="javascript:;">Action</a>
-                <a class="dropdown-item" href="javascript:;">Another action</a>
-                <a class="dropdown-item" href="javascript:;">Something else here</a>
-                <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+   
       <div class ="content-area" style="padding:20px;">
+
       <%= yield %>
     </div>
     </div>
-  </div>
-</div>
+
 
 <!-- Modal Template -->
-<div class="modal fade" id="backlinkModal" tabindex="-1" aria-labelledby="backlinkModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="backlinkModalLabel">Backlink Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div>
-          <strong>Site:</strong> <span id="modal-site"></span>
-        </div>
-        <div>
-          <strong>Price:</strong> &#8364;<span id="modal-price"></span>
-        </div>
-        <div>
-          <strong>Domain Rank:</strong> <span id="modal-domain-rank"></span>
-        </div>
-        <div>
-          <strong>Category:</strong> <span id="modal-category"></span>
-        </div>
-        <div>
-          <strong>Duration:</strong> <span id="modal-duration"></span>
-        </div>
-        <div>
-          <strong>Article Writing:</strong> <span id="modal-article-writing"></span>
-        </div>
-        <div>
-          <strong>CS Possible:</strong> <span id="modal-cs-possible"></span>
-        </div>
-        <div>
-          <strong>Comments:</strong> <span id="modal-comments"></span>
-        </div>
-        <div>
-          <strong>Special Price:</strong> <span id="modal-special-price"></span>
-        </div>
-        <div>
-          <strong>Available:</strong> <span id="modal-available"></span>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+
+<% else %>
+<%= yield %>
+ <% end %>
+
 
 <!-- jQuery from CDN -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <!-- Bootstrap JS from CDN -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
- <script src="assets/js/jquery.min.js"></script>
-  <script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
-  <script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
-  <script src="assets/js/bootstrap.bundle.min.js"></script>
+ 
+
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <!--plugins-->
-  <script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+
   <script src="assets/plugins/apexcharts-bundle/js/apexcharts.min.js"></script>
   <script src="assets/plugins/easyPieChart/jquery.easypiechart.js"></script>
   <script src="assets/plugins/chartjs/chart.min.js"></script>
-  <script src="assets/js/index.js"></script>
-  <!-- Main JS-->
-  <script src="assets/js/main.js"></script>
+
+  
 
 
 
 </body>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function () {
+  // Hide the loading spinner when the page content is fully loaded
+  const loadingSpinner = document.getElementById('loading-spinner');
+  loadingSpinner.style.opacity = 1;
+  setTimeout(() => {
+    loadingSpinner.style.transition = 'opacity 0.5s';
+    loadingSpinner.style.opacity = 0;
+    setTimeout(() => loadingSpinner.style.display = 'none', 500); // Remove from DOM after fading out
+  }, 200); // Small delay to ensure the spinner is visible before hiding
+});
+    $(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
 
+
+</script>
 </html>

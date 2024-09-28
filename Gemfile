@@ -74,3 +74,4 @@ end
 gem 'bootstrap', '~> 5.0.0'
 gem 'jquery-rails'
 gem 'kaminari'
+gem 'bcrypt', '~> 3.1.7'

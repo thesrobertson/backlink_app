@@ -1,0 +1,33 @@
+<h1>Recently Deleted</h1>
+
+<% if @backlinks.any? %>
+  <!-- Filtering Card -->
+
+  
+<!-- Backlinks Table Card -->
+<div class="card" style="border-radius: 40px;">
+  <div class="card-body table-responsive">
+    <table class="table" id="backlinksTable">
+      <thead>
+        <tr>
+
+          <th>Link Name</th>
+          <th></th>
+         
+      </thead>
+      <tbody>
+        <% @backlinks.each do |backlink| %>
+          <tr>
+          	<td><%= clean_url(backlink.site) %></td> 
+            <td name="<%= backlink.country %>"> <%= image_tag "#{backlink.country}.png", class: "flag-mini" %></td>
+           <!-- Link Name Column -->
+            
+           
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<% end %>

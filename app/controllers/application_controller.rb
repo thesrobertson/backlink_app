@@ -12,7 +12,9 @@ class ApplicationController < ActionController::Base
     end
   end
   def set_countries
+    unless session[nil]
     @countries = Backlink.distinct.pluck(:country)
     @categories = Backlink.distinct.pluck(:category)
+  end
   end
 end

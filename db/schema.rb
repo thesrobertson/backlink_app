@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_02_095142) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_28_090745) do
   create_table "backlinks", force: :cascade do |t|
     t.date "added_on"
     t.string "country"
@@ -33,6 +33,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_02_095142) do
     t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "password_digest"
   end
 
 end

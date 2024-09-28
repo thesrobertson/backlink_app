@@ -1,18 +1,22 @@
-<h1>Admin Login</h1>
-<%= form_with url: login_path, method: :post do %>
-  <div class="form-group">
-    <%= label_tag :username, "Username" %>
-    <%= text_field_tag :username, nil, class: 'form-control' %>
-  </div>
-  <div class="form-group">
-    <%= label_tag :password, "Password" %>
-    <%= password_field_tag :password, nil, class: 'form-control' %>
-  </div>
-  <%= submit_tag 'Login', class: 'btn btn-primary' %>
-<% end %>
+<div class="login-body">
+  <div class="login-page">
+    <div class="content-wrapper">
+      <%= form_with url: login_path, class: "loginBox", method: :post do %>
+        <%= image_tag 'linkzenit.png', class: "login-logo" %>
 
-<% if flash[:alert] %>
-  <div class="alert alert-danger mt-3">
-    <%= flash[:alert] %>
+        <h3>Admin Login</h3>
+        <div class="form-group">
+          <%= email_field_tag :username, nil, class: 'form-control inputBox', id: "uname", style: 'background-color: white;' %>
+          <%= password_field_tag :password, nil, class: 'form-control inputBox', style: 'background-color: white;' %>
+        </div>
+        <%= submit_tag 'Submit', class: 'btn btn-primary' %>
+      <% end %>
+
+      <% if flash[:alert] %>
+        <div class="alert alert-danger mt-3">
+          <%= flash[:alert] %>
+        </div>
+      <% end %>
+    </div>
   </div>
-<% end %>
+</div>
